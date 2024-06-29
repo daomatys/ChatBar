@@ -127,6 +127,25 @@ function ChatBar_StandardButtonClick(button)
 	end
 end
 
+function ChatBar_HardcoreButtonClick(button)
+	local chatFrame = SELECTED_DOCK_FRAME
+	if ( not chatFrame ) then
+		chatFrame = DEFAULT_CHAT_FRAME;
+	end
+	if (button == "RightButton") then
+		ToggleDropDownMenu(1, this.ChatID, ChatBar_DropDown, this:GetName(), 10, 0, "TOPRIGHT");
+	else
+		local chatType = ChatBar_ChatTypes[this.ChatID].type;
+		chatFrame.editBox:Show();
+		if (chatFrame.editBox.chatType == chatType) then
+			ChatFrame_OpenChat("/h", chatFrame);
+		else
+			chatFrame.editBox.chatType = chatType;
+		end
+		ChatEdit_UpdateHeader(chatFrame.editBox);
+	end
+end
+
 function ChatBar_WhisperButtonClick(button)
 	local chatFrame = SELECTED_DOCK_FRAME
 	if ( not chatFrame ) then
@@ -389,8 +408,14 @@ ChatBar_ChatTypes = {
 		text = function() return ChatBar_ChannelText(10); end,
 		click = function(button) ChatBar_ChannelClick(button, 10); end,
 		show = function() return ChatBar_ChannelShow(10); end
+	},
+	{
+		type = "HARDCORE",
+		shortText = function() return "H"; end,
+		text = function() return "Hardcore"; end,
+		click = ChatBar_HardcoreButtonClick,
+		show = function() return true; end
 	}
-	
 };
 
 ChatBar_BarTypes = {};
