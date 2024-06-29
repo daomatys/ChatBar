@@ -136,13 +136,15 @@ function ChatBar_HardcoreButtonClick(button)
 		ToggleDropDownMenu(1, this.ChatID, ChatBar_DropDown, this:GetName(), 10, 0, "TOPRIGHT");
 	else
 		local chatType = ChatBar_ChatTypes[this.ChatID].type;
-		chatFrame.editBox:Show();
+		--ChatFrame_SendTell(name, SELECTED_DOCK_FRAME)
 		if (chatFrame.editBox.chatType == chatType) then
-			ChatFrame_OpenChat("/h", chatFrame);
+			ChatFrame_OpenChat("", chatFrame);
 		else
-			chatFrame.editBox.chatType = chatType;
+			ChatFrame_ReplyTell(chatFrame);
+			if (not chatFrame.editBox:IsVisible()) or (chatFrame.editBox.chatType ~= chatType) then
+				ChatFrame_OpenChat("/h ", chatFrame);
+			end
 		end
-		ChatEdit_UpdateHeader(chatFrame.editBox);
 	end
 end
 
